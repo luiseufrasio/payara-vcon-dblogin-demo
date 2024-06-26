@@ -16,7 +16,7 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 @Startup
 public class DatabaseSetup {
 
-    @Resource
+    @Resource(name = "jdbc/postgres")
     private DataSource dataSource; // default datasource
 
     @Inject
@@ -36,13 +36,13 @@ public class DatabaseSetup {
         executeUpdate(dataSource, "CREATE TABLE IF NOT EXISTS caller(name VARCHAR(64) PRIMARY KEY, password VARCHAR(255))");
         executeUpdate(dataSource, "CREATE TABLE IF NOT EXISTS caller_groups(caller_name VARCHAR(64), group_name VARCHAR(64))");
 
-        executeUpdate(dataSource, "INSERT INTO caller VALUES('myuser', '" + passwordHash.generate("secret".toCharArray()) + "')");
-        executeUpdate(dataSource, "INSERT INTO caller VALUES('myadmin', '" + passwordHash.generate("secret".toCharArray()) + "')");
+        executeUpdate(dataSource, "INSERT INTO caller VALUES('luis', '" + passwordHash.generate("123456".toCharArray()) + "')");
+        executeUpdate(dataSource, "INSERT INTO caller VALUES('admin', '" + passwordHash.generate("123456".toCharArray()) + "')");
 
-        executeUpdate(dataSource, "INSERT INTO caller_groups VALUES('myadmin', 'admin')");
-        executeUpdate(dataSource, "INSERT INTO caller_groups VALUES('myadmin', 'user')");
+        executeUpdate(dataSource, "INSERT INTO caller_groups VALUES('admin', 'admin')");
+        executeUpdate(dataSource, "INSERT INTO caller_groups VALUES('admin', 'user')");
 
-        executeUpdate(dataSource, "INSERT INTO caller_groups VALUES('myuser', 'user')");
+        executeUpdate(dataSource, "INSERT INTO caller_groups VALUES('luis', 'user')");
     }
 
     @PreDestroy
